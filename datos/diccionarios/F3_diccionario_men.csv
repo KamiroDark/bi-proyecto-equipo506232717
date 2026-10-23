@@ -1,0 +1,10 @@
+Campo,Tipo,Descripción,Ejemplo,Problema de calidad
+AÑO,Texto,Año del registro,2.015,Punto de miles en el año.
+COD_DANE_DEPARTAMENTO,Texto,Código del departamento,11,Sin problema detectado.
+CODIGO_DANE,Texto,Código DANE del establecimiento,111.001.000.132,Punto de miles; 2023 casi sin códigos.
+NOMBRE_ESTABLECIMIENTO,Texto,Nombre del colegio,COLEGIO AQUILEO PARRA (IED),Texto libre; no sirve como llave.
+SECTOR,Texto,OFICIAL / NO_OFICIAL,NO_OFICIAL,Tercera forma de escribir el sector.
+CALENDARIO,Texto,Calendario académico,A,Sin problema detectado.
+CARACTER,Texto,Carácter de la media,-,"Vacíos escritos como ""-""."
+TOTAL_MATRICULA,Número,Estudiantes matriculados,3.201,Punto de miles.
+CANTIDAD_SEDES,Número,Número de sedes,1,Sin problema detectado.

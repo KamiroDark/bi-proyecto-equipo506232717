@@ -1,0 +1,14 @@
+Campo,Tipo,Descripción,Ejemplo,Problema de calidad
+DANE12_EST,Texto,Código DANE del establecimiento,111001000132,Solo sedes vigentes en 2026; faltan colegios cerrados.
+DANE12_SED,Texto,Código DANE de la sede,111001000132,Sin duplicados (verificado).
+NOMBRE_EST,Texto,Nombre del establecimiento,COLEGIO AQUILEO PARRA (IED),Texto libre; no sirve como llave.
+SECTOR,Entero (código),1 No oficial · 2 Oficial,2,Código sin etiqueta en el archivo.
+NATU_JUR,Entero (código),Naturaleza jurídica,9,Dominio distinto en catálogo y servicio REST.
+CLASE_TIPO,Entero (código),1 Distrital … 6 Privado régimen especial,4,Código sin etiqueta.
+CALENDARIO,Entero (código),1 A · 2 A-B · 3 B · 4 B-Otro · 5 Otro,1,Código sin etiqueta.
+ZONA,Entero (código),1 Urbana · 2 Rural · 3-6 mixtas,1,Sin dominio en el catálogo PDF.
+COD_LOCA,Texto (código),Localidad (01-20),01,"Alias ""Nombre de la localidad"" pero trae código."
+NOM_UPZ,Texto (código),UPZ,9,"Se llama ""NOM"" pero trae código."
+ESTRATO,Texto (código),Estrato del predio (0 y 7 = sin dato),7,"Códigos de ""sin dato"" mezclados con estratos."
+FECHA,Fecha,Fecha de corte,2026-09-30,El servicio REST dice 2025-12-31.
+geometry,Punto,Ubicación de la sede,"(-8242002,85; 531131,02)","En EPSG 3857, no en grados."
