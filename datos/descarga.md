@@ -37,5 +37,7 @@ Los CSV de F1 y F3 se guardan dentro de un .zip, sin ningún cambio, porque GitH
 - Boletines estadísticos de la SED 2017-2023 (PDF): https://www.educacionbogota.edu.co/portal_institucional/conoce-nuestras-cifras
   Se usan para conciliar los promedios Saber 11 por localidad y como contexto de deserción.
 
-No se usan datos sintéticos. Ninguna fuente contiene datos personales identificables; el ETL excluye además
-`ESTU_FECHANACIMIENTO` de F1 por ser un cuasi-identificador.
+No se usan datos sintéticos. Los resultados del ICFES vienen anonimizados por la entidad. Por privacidad, el ETL
+excluye `ESTU_FECHANACIMIENTO` de F1 (cuasi-identificador) y `RECTOR` de F3 (nombre de una persona), y esas dos
+columnas tampoco aparecen en las muestras de `datos/muestras`. Los archivos de `datos/raw` se conservan tal como los
+publica cada entidad.

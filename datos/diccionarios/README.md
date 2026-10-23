@@ -51,3 +51,4 @@
 | CARACTER | Texto | Carácter de la media | - | Vacíos escritos como "-". |
 | TOTAL_MATRICULA | Número | Estudiantes matriculados | 3.201 | Punto de miles. |
 | CANTIDAD_SEDES | Número | Número de sedes | 1 | Sin problema detectado. |
+| RECTOR | Texto | Nombre del rector | (se omite) | Dato personal: se excluye en el ETL y en la muestra. |
