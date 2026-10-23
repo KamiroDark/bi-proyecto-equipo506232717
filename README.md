@@ -1,4 +1,4 @@
-# ¿La pandemia amplió la brecha? Resultados Saber 11 en colegios oficiales y no oficiales de Bogotá
+# Secretaría de Educación del Distrito de Bogotá: ¿la pandemia amplió la brecha entre colegios oficiales y no oficiales en el Saber 11?
 
 Proyecto final de **Business Intelligence** – Fundación Universitaria Konrad Lorenz. Docente: Leandro Pájaro Fuentes.
 
@@ -14,8 +14,8 @@ modelo predictivo.
 | Nombre | Código |
 |---|---|
 | Laura Valentina López García | 506232714 |
-| Juan Camilo Prieto | 506232717 |
-| Diego Alejandro Gil Moreno | [CÓDIGO] |
+| Juan Camilo Prieto Mestizo | 506232717 |
+| Diego Alejandro Gil Moreno | 507232716 |
 
 ## Herramientas
 - ETL: Pentaho Data Integration (Spoon)
