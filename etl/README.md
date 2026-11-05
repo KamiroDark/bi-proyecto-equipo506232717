@@ -52,7 +52,7 @@ Primero las dimensiones y al final los hechos, porque la tabla de hechos busca l
 | 1 | `t_dim_contexto.ktr` | F3 | `dim_contexto_colegio_anio` | Hecho |
 | 2 | `t_dim_perfil.ktr` | F1 | `dim_perfil_estudiante` | Hecho |
 | 3 | `t_dim_colegio.ktr` | F1 y F2 | `dim_colegio` | Hecho |
-| 4 | `t_fact_resultado_saber11.ktr` | F1 | `fact_resultado_saber11` | Pendiente |
+| 4 | `t_fact_resultado_saber11.ktr` | F1 | `fact_resultado_saber11` | Hecho |
 | 5 | `job_carga_dw.kjb` | — | Ejecuta 1 a 4 en orden | Pendiente |
 
 ## Periodos faltantes
@@ -114,3 +114,15 @@ Decisiones:
 
 Resultado: 1.323 sedes cargadas en `dim_colegio` (más la fila `-1` Sin dato): 414 oficiales y 909 no oficiales.
 Conciliación de F2: 2.176 sedes leídas = 1.171 usadas en la dimensión + 1.005 sin resultados en F1.
+
+## Reglas de limpieza de t_fact_resultado_saber11
+| Regla | Paso de PDI | Efecto en la ejecución completa |
+|---|---|---|
+| Resultados duplicados: una fila por estudiante y periodo (`ESTU_CONSECUTIVO` + `PERIODO`) | `quita_duplicados` | 523.922 leídas, 361.719 únicas: 162.203 duplicados quitados (159.417 en 2019 y 2022 y 2.786 en 2016-2, 2017-2 y 2018-1), todos idénticos |
+| Códigos de periodo del ICFES (`20172` hasta 2017 y `20194` desde 2019) a año y semestre; el último dígito 1 es semestre 1 y 2 o 4 es semestre 2 | `normaliza_periodo` | 361.719 filas; 159.085 traían el código `…4` (`filtra_periodo_recodificado` y `cuenta_periodo_recodificado`) |
+| Perfil con vacíos o `Sin Estrato` pasa a `Sin dato` (misma regla de `t_dim_perfil`) | `marca_perfil_incompleto`, `filtra_perfil_incompleto` y `limpia_vacios_perfil` | 16.341 filas afectadas |
+| Llave de cada dimensión; si no hay pareja la fila apunta al miembro `-1` Sin dato | `busca_sk_tiempo`, `busca_sk_colegio`, `busca_sk_contexto` y `busca_sk_perfil` | Sin tiempo: 0. Sin colegio: 0. Sin perfil: 0. Sin contexto del MEN: 634 (28 combinaciones establecimiento-año) |
+| Excluir datos personales (`ESTU_FECHANACIMIENTO` y demás columnas del estudiante) | `selecciona_hechos` | Solo pasan 16 de las 51 columnas |
+
+Resultado: 361.719 filas cargadas en `fact_resultado_saber11`, con la suma de `punt_global` igual a 99.459.431 en la fuente
+(sin duplicados) y en el almacén. Periodos faltantes: ver la sección anterior; los hechos cubren 11 de los 14 semestres de `dim_tiempo`.
