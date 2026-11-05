@@ -11,7 +11,7 @@ CREATE TABLE dim_colegio (
     jornada                  VARCHAR(30)   NULL,
     calendario               VARCHAR(10)   NULL,
     bilingue                 VARCHAR(10)   NULL,
-    zona                     VARCHAR(20)   NULL,
+    zona                     VARCHAR(60)   NULL,
     upz                      VARCHAR(10)   NULL,
     localidad                VARCHAR(40)   NOT NULL,
     latitud                  DECIMAL(10,7) NULL,

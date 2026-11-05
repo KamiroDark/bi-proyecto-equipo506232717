@@ -51,7 +51,7 @@ Primero las dimensiones y al final los hechos, porque la tabla de hechos busca l
 | 0 | `dw/ddl/06_poblar_dim_tiempo.sql` | — | `dim_tiempo` (14 semestres) | Hecho |
 | 1 | `t_dim_contexto.ktr` | F3 | `dim_contexto_colegio_anio` | Hecho |
 | 2 | `t_dim_perfil.ktr` | F1 | `dim_perfil_estudiante` | Hecho |
-| 3 | `t_dim_colegio.ktr` | F2 y F1 | `dim_colegio` | Pendiente |
+| 3 | `t_dim_colegio.ktr` | F1 y F2 | `dim_colegio` | Hecho |
 | 4 | `t_fact_resultado_saber11.ktr` | F1 | `fact_resultado_saber11` | Pendiente |
 | 5 | `job_carga_dw.kjb` | — | Ejecuta 1 a 4 en orden | Pendiente |
 
@@ -91,3 +91,26 @@ Conciliación de F3: 606.206 leídas = 14.677 cargadas + 583.694 + 7.835 descart
 Resultado: 6.632 combinaciones cargadas en `dim_perfil_estudiante` (más la fila `-1` Sin dato).
 Campos corregidos en F1 (de 523.922 filas): estrato 20.638 (17.773 vacíos y 2.865 `Sin Estrato`),
 internet 17.211, educación de la madre 16.725, educación del padre 16.835, computador 8.922 y género 63.
+
+## Reglas de limpieza de t_dim_colegio
+La dimensión tiene una fila por sede con resultados en el Saber 11 (F1) enriquecida con el directorio de la SED (F2).
+
+| Regla | Paso de PDI | Efecto en la ejecución completa |
+|---|---|---|
+| `BOGOTÁ` y `BOGOTA` se unifican en `BOGOTA` | `filtra_depto_con_tilde` y `unifica_bogota` | 330.259 de 523.922 filas corregidas |
+| Una fila por sede, la del periodo más reciente (817 de las 1.323 sedes cambian de atributos entre periodos) | `ordena_por_sede` y `quita_repetidos_sede` | 523.922 filas se resumen en 1.323 sedes |
+| Coordenadas de EPSG 3857 (metros) a latitud y longitud en grados (EPSG 4326) | `convierte_coordenadas` (User Defined Java Expression) | 2.176 sedes del directorio; las 1.171 que cruzan con F1 quedan en la dimensión |
+| Códigos de F2 sin etiqueta a texto (`SECTOR`, `CLASE_TIPO`, `CALENDARIO`, `ZONA`, `COD_LOCA`) con el dominio del servicio REST de la SED (`datos/diccionarios/apoyo_dominios_sed.csv`) | `traduce_sector`, `traduce_clase`, `traduce_calendario`, `traduce_zona` y `traduce_localidad` | 2.176 filas cada uno |
+| Etiquetas de F1 (`OFICIAL`/`NO OFICIAL`, `URBANO`/`RURAL`, `S`/`N`) al mismo vocabulario que F2 | `traduce_naturaleza`, `traduce_area` y `traduce_bilingue` | 1.323 filas cada uno |
+| Cruce de F1 con el directorio por código DANE de sede; si la sede no está en F2 se conservan sus datos de F1 y la localidad queda `Sin dato` | `busca_en_directorio_sed` y `consolida_atributos` | 1.171 sedes con directorio y 152 sin directorio (18.903 resultados, el 3,6 %) |
+| Excluir datos personales y las columnas que no son del colegio | `selecciona_colegios` y `selecciona_columnas_colegio` | Solo pasan 11 de las 51 columnas de F1 |
+
+Decisiones:
+- Archivo frente a servicio REST de la SED: se usa el archivo GeoJSON (2.176 sedes, corte 30/09/2026). El servicio REST
+  (2.211 sedes, corte 31/12/2025) solo se consultó para los dominios de los códigos.
+- `NATU_JUR` no se carga al almacén: el modelo no tiene esa columna, así que su contradicción de diccionarios no afecta la carga.
+- Las 1.005 sedes del directorio que no aparecen en F1 no se cargan: no tienen resultados del Saber 11.
+- La jornada de la sede es la del periodo más reciente en que aparece.
+
+Resultado: 1.323 sedes cargadas en `dim_colegio` (más la fila `-1` Sin dato): 414 oficiales y 909 no oficiales.
+Conciliación de F2: 2.176 sedes leídas = 1.171 usadas en la dimensión + 1.005 sin resultados en F1.
