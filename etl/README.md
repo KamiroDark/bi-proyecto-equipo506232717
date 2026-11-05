@@ -50,7 +50,7 @@ Primero las dimensiones y al final los hechos, porque la tabla de hechos busca l
 |---|---|---|---|---|
 | 0 | `dw/ddl/06_poblar_dim_tiempo.sql` | — | `dim_tiempo` (14 semestres) | Hecho |
 | 1 | `t_dim_contexto.ktr` | F3 | `dim_contexto_colegio_anio` | Hecho |
-| 2 | `t_dim_perfil.ktr` | F1 | `dim_perfil_estudiante` | Pendiente |
+| 2 | `t_dim_perfil.ktr` | F1 | `dim_perfil_estudiante` | Hecho |
 | 3 | `t_dim_colegio.ktr` | F2 y F1 | `dim_colegio` | Pendiente |
 | 4 | `t_fact_resultado_saber11.ktr` | F1 | `fact_resultado_saber11` | Pendiente |
 | 5 | `job_carga_dw.kjb` | — | Ejecuta 1 a 4 en orden | Pendiente |
@@ -78,3 +78,16 @@ Estos periodos **no se inventan ni se rellenan con datos**:
 
 Resultado: 14.677 filas cargadas en `dim_contexto_colegio_anio`.
 Conciliación de F3: 606.206 leídas = 14.677 cargadas + 583.694 + 7.835 descartadas.
+
+## Reglas de limpieza de t_dim_perfil
+| Regla | Paso de PDI | Efecto en la ejecución completa |
+|---|---|---|
+| Contar los campos del perfil vacíos o con `Sin Estrato` en cada fila | `marca_perfil_incompleto` | 523.922 filas revisadas |
+| Separar las filas que hay que corregir de las que no | `filtra_perfil_incompleto` | 26.654 filas por corregir |
+| Reemplazar vacíos y `Sin Estrato` por `Sin dato` en género, estrato, internet, computador y educación de madre y padre | `limpia_vacios_perfil` | 26.654 filas afectadas |
+| Excluir `ESTU_FECHANACIMIENTO` y las demás columnas que no son del perfil | `selecciona_perfil` | Solo pasan 6 de las 51 columnas |
+| Una fila por combinación de perfil | `quita_repetidos_perfil` | 523.922 filas se resumen en 6.632 combinaciones |
+
+Resultado: 6.632 combinaciones cargadas en `dim_perfil_estudiante` (más la fila `-1` Sin dato).
+Campos corregidos en F1 (de 523.922 filas): estrato 20.638 (17.773 vacíos y 2.865 `Sin Estrato`),
+internet 17.211, educación de la madre 16.725, educación del padre 16.835, computador 8.922 y género 63.
