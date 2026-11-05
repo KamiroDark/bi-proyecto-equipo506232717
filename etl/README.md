@@ -53,7 +53,26 @@ Primero las dimensiones y al final los hechos, porque la tabla de hechos busca l
 | 2 | `t_dim_perfil.ktr` | F1 | `dim_perfil_estudiante` | Hecho |
 | 3 | `t_dim_colegio.ktr` | F1 y F2 | `dim_colegio` | Hecho |
 | 4 | `t_fact_resultado_saber11.ktr` | F1 | `fact_resultado_saber11` | Hecho |
-| 5 | `job_carga_dw.kjb` | — | Ejecuta 1 a 4 en orden | Pendiente |
+| 5 | `job_carga_dw.kjb` (en `etl/trabajos/`) | — | Recrea las tablas (scripts `dw/ddl/00` a `06`) y ejecuta 1 a 4 en orden | Hecho |
+
+## Cómo ejecutar la carga completa
+1. Servicio MySQL encendido y las variables de `kettle.properties` definidas (ver arriba).
+2. Descomprimir F1 y F3 en `datos/raw/`.
+3. En Spoon, abrir `etl/trabajos/job_carga_dw.kjb` y presionar **Run** (nivel de log *Basic*).
+   El trabajo borra y recrea las cinco tablas del almacén, puebla `dim_tiempo` y carga las dimensiones y los hechos.
+   Es una carga completa: se puede ejecutar sobre una base vacía o repetir sin duplicar datos.
+4. Duración aproximada: 12 minutos (la mayor parte, 5 minutos, es el ordenamiento de los 523.922 resultados de F1).
+5. Verificar con las consultas de `dw/conciliacion/`.
+
+Resultado de la última ejecución completa (sin errores, 13 pasos del trabajo):
+
+| Tabla | Registros |
+|---|---|
+| `dim_tiempo` | 14 |
+| `dim_colegio` | 1.323 (más la fila `-1`) |
+| `dim_contexto_colegio_anio` | 14.677 (más la fila `-1`) |
+| `dim_perfil_estudiante` | 6.632 (más la fila `-1`) |
+| `fact_resultado_saber11` | 361.719 |
 
 ## Periodos faltantes
 El ICFES no publicó los periodos 2018-2, 2020-2 y 2021-2 (el conjunto de datos dice cubrir de 2010 a 2022).
