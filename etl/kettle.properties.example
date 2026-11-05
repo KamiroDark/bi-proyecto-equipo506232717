@@ -1,0 +1,12 @@
+# Plantilla de ~/.kettle/kettle.properties (en Windows: C:\Users\<usuario>\.kettle\kettle.properties)
+# Copie este archivo a esa carpeta con el nombre kettle.properties y complete los valores.
+# NUNCA suba su kettle.properties real al repositorio.
+
+# Ruta absoluta de la carpeta datos/raw de su copia local del repositorio, con barras /
+RUTA_RAW=C:/ruta/a/bi-proyecto-equipo506232717/datos/raw
+
+DB_HOST=<servidor MySQL, en Aiven pestaña Overview>
+DB_PORT=<puerto>
+DB_NAME=dw
+DB_USER=<usuario>
+DB_PASS=<pida la contraseña al equipo por un canal privado>
