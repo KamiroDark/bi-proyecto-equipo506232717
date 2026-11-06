@@ -124,6 +124,8 @@ La dimensión tiene una fila por sede con resultados en el Saber 11 (F1) enrique
 | Etiquetas de F1 (`OFICIAL`/`NO OFICIAL`, `URBANO`/`RURAL`, `S`/`N`) al mismo vocabulario que F2 | `traduce_naturaleza`, `traduce_area` y `traduce_bilingue` | 1.323 filas cada uno |
 | Cruce de F1 con el directorio por código DANE de sede; si la sede no está en F2 se conservan sus datos de F1 y la localidad queda `Sin dato` | `busca_en_directorio_sed` y `consolida_atributos` | 1.171 sedes con directorio y 152 sin directorio (18.903 resultados, el 3,6 %) |
 | Excluir datos personales y las columnas que no son del colegio | `selecciona_colegios` y `selecciona_columnas_colegio` | Solo pasan 11 de las 51 columnas de F1 |
+| Archivo y servicio REST de la SED con distinta cobertura y fecha de corte (problema de calidad de la Entrega 1) | `lee_f2_json` | Se lee solo el archivo GeoJSON: 2.176 sedes con corte 30/09/2026; el servicio REST (2.211 sedes, corte 31/12/2025) solo se consultó para los dominios de los códigos |
+| `NATU_JUR` codificado y con diccionarios contradictorios (problema de calidad de la Entrega 1) | `lee_f2_json` | La columna no se lee porque el modelo no la usa; 2 de las 2.176 sedes traen el código 19, que no existe en el catálogo |
 
 Decisiones:
 - Archivo frente a servicio REST de la SED: se usa el archivo GeoJSON (2.176 sedes, corte 30/09/2026). El servicio REST
