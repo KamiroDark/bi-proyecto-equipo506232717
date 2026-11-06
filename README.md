@@ -19,7 +19,7 @@ modelo predictivo.
 
 ## Herramientas
 - ETL: Pentaho Data Integration (Spoon)
-- Almacén: MySQL (administrado con DBeaver)
+- Almacén: MySQL 8.4 en la nube (Aiven), administrado con DBeaver
 - Tablero: Power BI
 - Modelo predictivo: Python (pandas, scikit-learn)
 - Diagramas: draw.io
