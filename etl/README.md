@@ -92,6 +92,7 @@ Estos periodos **no se inventan ni se rellenan con datos**:
 | Quitar puntos de miles de `AÑO`, `CODIGO_DANE`, `TOTAL_MATRICULA` y `CANTIDAD_SEDES` | `quita_puntos_miles` | Se aplica a las 22.512 filas de Bogotá |
 | Solo años 2016 a 2022 (excluye también el año 2023 con volumen anómalo) | `filtra_anios` | 7.835 filas descartadas |
 | Excluir datos personales (`RECTOR`, `TELEFONO`, `EMAIL`) | `selecciona_columnas` | Las columnas no pasan al almacén |
+| Valores vacíos con guion en `CARACTER` (problema de calidad de la Entrega 1) | `selecciona_columnas` | 881 de las 14.677 filas de Bogotá 2016-2022 traen `-`; la columna no pasa al almacén porque el modelo no la usa |
 | Clasificar la matrícula (pequeño ≤ 500, mediano ≤ 1.500, grande > 1.500) | `calcula_rango_matricula` | 14.677 filas |
 | Una fila por establecimiento y año | `quita_repetidos` | 0 repetidos |
 
