@@ -28,7 +28,7 @@ modelo predictivo.
 ```
 README.md           caso, integrantes, herramientas y cómo reproducir
 docs/entregas/      PDF de cada entrega
-docs/diagramas/     arquitectura y esquema dimensional (PNG + draw.io)
+docs/diagramas/     arquitectura, esquema dimensional (PNG + draw.io) y modelo físico generado desde la base
 datos/raw/          fuentes originales sin modificar (los CSV de F1 y F3 van dentro de un .zip)
 datos/muestras/     20 filas por fuente (CSV)
 datos/diccionarios/ un diccionario por fuente + dominios de códigos de la SED
@@ -38,11 +38,19 @@ dw/conciliacion/    consultas de conteo y promedios contra cifras oficiales (Ent
 etl/transformaciones/ archivos .ktr de Pentaho (Entrega 2)
 etl/trabajos/       archivos .kjb de Pentaho (Entrega 2)
 etl/README.md       orden de ejecución y parámetros
-dashboard/          archivo .pbix y capturas (Entrega 3)
+dashboard/          archivo .pbix y capturas (Entrega 2)
 modelo/             notebooks del modelo predictivo (Entrega 3)
 ```
 
-## Cómo reproducir (Entrega 1)
-1. Descargar las fuentes siguiendo `datos/descarga.md` (o descomprimir las copias de `datos/raw/`).
-2. Revisar los diccionarios en `datos/diccionarios/` y las muestras en `datos/muestras/`.
-3. El diseño (arquitectura y modelo dimensional) está en `docs/entregas/` y `docs/diagramas/`.
+## Cómo reproducir la solución
+1. **Fuentes:** descomprimir en `datos/raw/` los archivos `.zip` de F1 (ICFES) y F3 (MEN); F2 (SED) ya está como `.geojson`.
+   Cómo obtener cada fuente desde su origen: `datos/descarga.md`.
+2. **Base de datos:** crear la base `dw` en MySQL 8 (el equipo usa MySQL 8.4 en Aiven). Las tablas las crea el trabajo de
+   Pentaho; también se pueden crear a mano con los scripts de `dw/ddl/` en orden (`01` a `06`).
+3. **Carga (ETL):** configurar las variables de conexión en `kettle.properties` (plantilla en `etl/kettle.properties.example`,
+   sin contraseñas) y ejecutar en Spoon el trabajo `etl/trabajos/job_carga_dw.kjb`. Los detalles, el orden de ejecución
+   y las reglas de limpieza están en `etl/README.md`.
+4. **Conciliación:** ejecutar las consultas de `dw/conciliacion/` sobre la base `dw` para verificar los conteos, los totales
+   y la comparación con los boletines de la SED.
+5. **Tablero:** abrir `dashboard/` en Power BI Desktop, cambiar el origen de datos a la base `dw` y actualizar.
+6. **Documentación:** los PDF de cada entrega están en `docs/entregas/` y los diagramas en `docs/diagramas/`.
