@@ -51,6 +51,6 @@ modelo/             notebooks del modelo predictivo (Entrega 3)
    sin contraseñas) y ejecutar en Spoon el trabajo `etl/trabajos/job_carga_dw.kjb`. Los detalles, el orden de ejecución
    y las reglas de limpieza están en `etl/README.md`.
 4. **Conciliación:** ejecutar las consultas de `dw/conciliacion/` sobre la base `dw` para verificar los conteos, los totales
-   y la comparación con los boletines de la SED.
-5. **Tablero:** abrir `dashboard/` en Power BI Desktop, cambiar el origen de datos a la base `dw` y actualizar.
+y la comparación con los boletines de la SED.
+5. **Tablero:** abrir `dashboard/tablero_saber11.pbix` en Power BI Desktop, cambiar el origen de datos a la base `dw` y actualizar.
 6. **Documentación:** los PDF de cada entrega están en `docs/entregas/` y los diagramas en `docs/diagramas/`.
