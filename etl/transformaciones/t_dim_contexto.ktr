@@ -535,6 +535,21 @@
     </hop>
     <hop>
       <from>filtra_anios</from>
+      <to>filtra_caracter_guion</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>filtra_caracter_guion</from>
+      <to>cuenta_caracter_guion</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>filtra_caracter_guion</from>
+      <to>selecciona_columnas</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>cuenta_caracter_guion</from>
       <to>selecciona_columnas</to>
       <enabled>Y</enabled>
     </hop>
@@ -1014,7 +1029,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <send_true_to>selecciona_columnas</send_true_to>
+    <send_true_to>filtra_caracter_guion</send_true_to>
     <send_false_to>descarta_fuera_periodo</send_false_to>
     <compare>
       <condition>
@@ -1308,6 +1323,76 @@
     <GUI>
       <xloc>1392</xloc>
       <yloc>80</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>filtra_caracter_guion</name>
+    <type>FilterRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <send_true_to>cuenta_caracter_guion</send_true_to>
+    <send_false_to>selecciona_columnas</send_false_to>
+    <compare>
+      <condition>
+        <negated>N</negated>
+        <leftvalue>CARACTER</leftvalue>
+        <function>=</function>
+        <rightvalue/>
+        <value>
+          <name>constant</name>
+          <type>String</type>
+          <text>-</text>
+          <length>-1</length>
+          <precision>-1</precision>
+          <isnull>N</isnull>
+          <mask/>
+        </value>
+      </condition>
+    </compare>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>912</xloc>
+      <yloc>272</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>cuenta_caracter_guion</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1100</xloc>
+      <yloc>272</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
