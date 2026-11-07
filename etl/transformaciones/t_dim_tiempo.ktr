@@ -530,7 +530,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <meta>
+    <fields>
       <field>
         <name>anio</name>
         <type>Integer</type>
@@ -553,7 +553,7 @@
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
       </field>
-    </meta>
+    </fields>
     <data>
       <line>
         <item>2016</item>
