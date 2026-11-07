@@ -38,7 +38,7 @@ Se leen tal como se descargaron, sin abrirlas ni limpiarlas antes de PDI:
 Los CSV descomprimidos están en `.gitignore` (pesan más de 100 MB). Cómo obtener cada fuente: `datos/descarga.md`.
 
 ## Preparación
-1. Crear la base `dw` en MySQL y ejecutar en orden los scripts de `dw/ddl/` (`01` a `06`).
+1. Crear la base `dw` en MySQL y ejecutar en orden los scripts de `dw/ddl/` (`01` a `05`).
    El `00_drop_all.sql` borra las tablas y sirve para repetir la prueba desde cero.
 2. Definir las variables de la tabla anterior en `kettle.properties` y reiniciar Spoon.
 3. Descomprimir F1 y F3 en `datos/raw/`.
@@ -48,18 +48,18 @@ Primero las dimensiones y al final los hechos, porque la tabla de hechos busca l
 
 | # | Transformación | Lee | Carga | Estado |
 |---|---|---|---|---|
-| 0 | `dw/ddl/06_poblar_dim_tiempo.sql` | — | `dim_tiempo` (14 semestres) | Hecho |
+| 0 | `t_dim_tiempo.ktr` | Genera los 14 semestres (sin archivo fuente) | `dim_tiempo` | Hecho |
 | 1 | `t_dim_contexto.ktr` | F3 | `dim_contexto_colegio_anio` | Hecho |
 | 2 | `t_dim_perfil.ktr` | F1 | `dim_perfil_estudiante` | Hecho |
 | 3 | `t_dim_colegio.ktr` | F1 y F2 | `dim_colegio` | Hecho |
 | 4 | `t_fact_resultado_saber11.ktr` | F1 | `fact_resultado_saber11` | Hecho |
-| 5 | `job_carga_dw.kjb` (en `etl/trabajos/`) | — | Recrea las tablas (scripts `dw/ddl/00` a `06`) y ejecuta 1 a 4 en orden | Hecho |
+| 5 | `job_carga_dw.kjb` (en `etl/trabajos/`) | — | Recrea las tablas (scripts `dw/ddl/00` a `05`) y ejecuta 0 a 4 en orden | Hecho |
 
 ## Cómo ejecutar la carga completa
 1. Servicio MySQL encendido y las variables de `kettle.properties` definidas (ver arriba).
 2. Descomprimir F1 y F3 en `datos/raw/`.
 3. En Spoon, abrir `etl/trabajos/job_carga_dw.kjb` y presionar **Run** (nivel de log *Basic*).
-   El trabajo borra y recrea las cinco tablas del almacén, puebla `dim_tiempo` y carga las dimensiones y los hechos.
+   El trabajo borra y recrea las cinco tablas del almacén, carga `dim_tiempo` y las demás dimensiones, y al final los hechos.
    Es una carga completa: se puede ejecutar sobre una base vacía o repetir sin duplicar datos.
 4. Duración aproximada: 12 minutos (la mayor parte, 5 minutos, es el ordenamiento de los 523.922 resultados de F1).
 5. Verificar con las consultas de `dw/conciliacion/`.
@@ -84,6 +84,19 @@ Estos periodos **no se inventan ni se rellenan con datos**:
   2021-1, 2022-1 y 2022-2.
 - Los códigos de periodo del ICFES cambian (`20172` hasta 2017 y `20194` desde 2019): el ETL de hechos los
   normaliza a año y semestre.
+
+## Reglas de t_dim_tiempo
+`dim_tiempo` no tiene archivo fuente: la transformación genera el calendario (`define_semestres`, 14 filas de año y semestre,
+de 2016-1 a 2022-2) y calcula los demás atributos con `calcula_atributos_tiempo`.
+
+| Regla | Paso de PDI | Efecto en la ejecución completa |
+|---|---|---|
+| Un semestre por cada combinación año-semestre, sin huecos | `define_semestres` | 14 filas generadas |
+| Llave `sk_tiempo` = (año − 2016) × 2 + semestre; `periodo` con formato `AAAA-S` | `calcula_atributos_tiempo` | 14 filas |
+| Calendario de aplicación: semestre 1 = B, semestre 2 = A | `calcula_atributos_tiempo` | 14 filas |
+| Etapa: prepandemia hasta 2019, pandemia 2020 y 2021, pospandemia desde 2022 | `calcula_atributos_tiempo` | 14 filas |
+
+Resultado: 14 filas cargadas en `dim_tiempo` (0 descartadas).
 
 ## Reglas de limpieza de t_dim_contexto
 | Regla | Paso de PDI | Efecto en la ejecución completa |

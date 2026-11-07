@@ -203,15 +203,33 @@
       <yloc>160</yloc>
     </entry>
     <entry>
-      <name>puebla_dim_tiempo</name>
+      <name>t_dim_tiempo</name>
       <description/>
-      <type>SQL</type>
-      <sql/>
-      <useVariableSubstitution>F</useVariableSubstitution>
-      <sqlfromfile>T</sqlfromfile>
-      <sqlfilename>${Internal.Entry.Current.Directory}/../../dw/ddl/06_poblar_dim_tiempo.sql</sqlfilename>
-      <sendOneStatement>F</sendOneStatement>
-      <connection>aiven_dw</connection>
+      <type>TRANS</type>
+      <filename>${Internal.Entry.Current.Directory}/../transformaciones/t_dim_tiempo.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <run_configuration>Pentaho local</run_configuration>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
@@ -422,7 +440,7 @@
     </hop>
     <hop>
       <from>crea_fact</from>
-      <to>puebla_dim_tiempo</to>
+      <to>t_dim_tiempo</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -430,7 +448,7 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
-      <from>puebla_dim_tiempo</from>
+      <from>t_dim_tiempo</from>
       <to>t_dim_contexto</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>

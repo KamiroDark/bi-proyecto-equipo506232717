@@ -46,7 +46,7 @@ modelo/             notebooks del modelo predictivo (Entrega 3)
 1. **Fuentes:** descomprimir en `datos/raw/` los archivos `.zip` de F1 (ICFES) y F3 (MEN); F2 (SED) ya está como `.geojson`.
    Cómo obtener cada fuente desde su origen: `datos/descarga.md`.
 2. **Base de datos:** crear la base `dw` en MySQL 8 (el equipo usa MySQL 8.4 en Aiven). Las tablas las crea el trabajo de
-   Pentaho; también se pueden crear a mano con los scripts de `dw/ddl/` en orden (`01` a `06`).
+   Pentaho; también se pueden crear a mano con los scripts de `dw/ddl/` en orden (`01` a `05`; `dim_tiempo` se carga con `t_dim_tiempo.ktr`).
 3. **Carga (ETL):** configurar las variables de conexión en `kettle.properties` (plantilla en `etl/kettle.properties.example`,
    sin contraseñas) y ejecutar en Spoon el trabajo `etl/trabajos/job_carga_dw.kjb`. Los detalles, el orden de ejecución
    y las reglas de limpieza están en `etl/README.md`.
