@@ -33,7 +33,7 @@ datos/raw/          fuentes originales sin modificar (los CSV de F1 y F3 van den
 datos/muestras/     20 filas por fuente (CSV)
 datos/diccionarios/ un diccionario por fuente + dominios de códigos de la SED
 datos/descarga.md   URL, fecha, licencia y pasos para obtener cada fuente
-dw/ddl/             scripts CREATE TABLE (Entrega 2)
+dw/ddl/             scripts CREATE TABLE (Entrega 2; `06` es la tabla de predicciones de la Entrega 3)
 dw/conciliacion/    consultas de conteo y promedios contra cifras oficiales (Entrega 2)
 etl/transformaciones/ archivos .ktr de Pentaho (Entrega 2)
 etl/trabajos/       archivos .kjb de Pentaho (Entrega 2)
@@ -47,6 +47,7 @@ modelo/             notebooks del modelo predictivo (Entrega 3)
    Cómo obtener cada fuente desde su origen: `datos/descarga.md`.
 2. **Base de datos:** crear la base `dw` en MySQL 8 (el equipo usa MySQL 8.4 en Aiven). Las tablas las crea el trabajo de
    Pentaho; también se pueden crear a mano con los scripts de `dw/ddl/` en orden (`01` a `05`; `dim_tiempo` se carga con `t_dim_tiempo.ktr`).
+   La tabla `pred_puntaje_colegio` (`06`) no la crea Pentaho: se crea a mano una sola vez y la llena el notebook del modelo.
 3. **Carga (ETL):** configurar las variables de conexión en `kettle.properties` (plantilla en `etl/kettle.properties.example`,
    sin contraseñas) y ejecutar en Spoon el trabajo `etl/trabajos/job_carga_dw.kjb`. Los detalles, el orden de ejecución
    y las reglas de limpieza están en `etl/README.md`.
