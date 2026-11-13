@@ -38,8 +38,8 @@ dw/conciliacion/    consultas de conteo y promedios contra cifras oficiales (Ent
 etl/transformaciones/ archivos .ktr de Pentaho (Entrega 2)
 etl/trabajos/       archivos .kjb de Pentaho (Entrega 2)
 etl/README.md       orden de ejecución y parámetros
-dashboard/          archivo .pbix y capturas (Entrega 2)
-modelo/             notebooks del modelo predictivo (Entrega 3)
+dashboard/          archivo .pbix y capturas (Entrega 2; P3.png es la página de predicciones de la Entrega 3)
+modelo/             notebook del modelo (modelo_saber11.ipynb), extraccion.sql y requirements.txt (Entrega 3)
 ```
 
 ## Cómo reproducir la solución
@@ -54,4 +54,13 @@ modelo/             notebooks del modelo predictivo (Entrega 3)
 4. **Conciliación:** ejecutar las consultas de `dw/conciliacion/` sobre la base `dw` para verificar los conteos, los totales
 y la comparación con los boletines de la SED.
 5. **Tablero:** abrir `dashboard/tablero_saber11.pbix` en Power BI Desktop, cambiar el origen de datos a la base `dw` y actualizar.
-6. **Documentación:** los PDF de cada entrega están en `docs/entregas/` y los diagramas en `docs/diagramas/`.
+6. **Modelo predictivo (Entrega 3):** abrir `modelo/modelo_saber11.ipynb` en Google Colab (Archivo → Subir notebook)
+   o en Jupyter con las librerías de `modelo/requirements.txt` (`pip install -r modelo/requirements.txt`).
+   Ejecutar todas las celdas en orden; al inicio pide la contraseña de la base `dw`, que no queda guardada en el notebook.
+   La consulta que extrae los datos del almacén también está en `modelo/extraccion.sql`.
+   La última celda borra y vuelve a llenar la tabla `pred_puntaje_colegio` con las predicciones de 2022.
+   **Importante:** si se vuelve a correr el trabajo de Pentaho, después hay que ejecutar de nuevo el notebook,
+   porque las llaves `sk_contexto` se generan otra vez.
+7. **Ver las predicciones:** en `dashboard/tablero_saber11.pbix`, página de predicciones, actualizar los datos
+   y filtrar por localidad.
+8. **Documentación:** los PDF de cada entrega están en `docs/entregas/` y los diagramas en `docs/diagramas/`.
